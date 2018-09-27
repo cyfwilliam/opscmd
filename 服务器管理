@@ -7,6 +7,19 @@
 du  -sh * 2>/dev/null |grep G
 Redis的的内存监控：watch -d -n 1 './redis-cli info | grep mem·
 
+用iostat、sar、tprof检测是否是CPU原因
+用vmstat、svmon检测是否是内存原因
+用 filemon、iostat检测是否是硬盘原因
+用netstat 、nfsstat检测是否是网络原因
+CPU　>80%
+vmstat 中r(run)<5，b(behind)≈0，
+IBM RS/6000: 好 坏 糟糕
+CPU: user% + sys%< 70% user% + sys%= 85% user% + sys%=90%+
+磁盘: iowait % < 30% iowait % =40% iowait % = 50%+
+内存: 无pagein pageout 每个CPU 达到10 page/秒 更多的pagein pageout
+网络 < 30% 网络带宽
+运 行队列(Run Queue) < 2 * CPU个数
+一般来说vmstat的性能指标为:wa不超过25,us+sy多用户情况下不超过80%,r和b不高于5,pi和po基本为零,fr:sr 接近1:1(当然都为零最好),fre一般不要底到120
 
 SAR参数说明
 sar参数说明
