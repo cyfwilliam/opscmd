@@ -1,0 +1,50 @@
+crontab异常执行问题汇总
+@ctime：2018-09-27
+@author：cyfwilliam
+@version：1.0
+
+一、方便定位问题，打开crontab日志
+vim /etc/rsyslog.d/50-default.conf
+service rsyslog  restart
+
+1、ifconfig获取ip地址失败，导致含ip变量的文件名获取为空
+whereis ifconfig
+ifconfig: /sbin/ifconfig /usr/share/man/man8/ifconfig.8.gz
+ln -s /sbin/ifconfig /bin/ifconfig
+2、
+cat /data/scripts/mv_backup.sh
+#!/bin/bash
+脚本解释器，首行错误。#!/.bin/bash
+3、crontab 语法错误
+4、crontab任务行所有的文本路径及权限
+5、crontab脚本语法错误
+date
+Thu Sep 13 22:35:42 HKT 2018
+root@linuxer:/home/user0# tailf /var/log/cron.log
+Sep 13 04:30:39 linuxer crontab[17413]: (root) REPLACE (root)
+Sep 13 04:30:39 linuxer crontab[17413]: (root) END EDIT (root)
+Sep 13 04:31:01 linuxer cron[8646]: (root) RELOAD (crontabs/root)
+Sep 13 04:31:08 linuxer crontab[17444]: (root) LIST (root)
+Sep 13 04:34:48 linuxer crontab[17494]: (root) BEGIN EDIT (root)
+Sep 13 04:34:58 linuxer crontab[17494]: (root) REPLACE (root)
+Sep 13 04:34:58 linuxer crontab[17494]: (root) END EDIT (root)
+Sep 13 04:35:01 linuxer cron[8646]: (root) RELOAD (crontabs/root)
+Sep 13 04:35:01 linuxer CRON[17508]: (root) CMD (/data/scripts/mv_backup.sh)
+Sep 13 04:35:02 linuxer crontab[17511]: (root) LIST (root)
+Sep 13 04:36:01 linuxer CRON[17524]: (root) CMD (/data/scripts/mv_backup.sh)
+32 22 * * * /data/scripts/mv_backup.sh
+##* * * * * mv /home/user0/conf*.tar.gz /data/backup/
+虽系统时间为22:32，但是crontab里时间并未一致，一直未执行。 crontab每分钟执行，仅改变自动周期脚本执行
+
+修改系统时区
+无问题crontab
+date
+Thu Sep 13 22:32:02 CST 2018
+有问题crontab
+ date
+tzselect
+4 9 1 
+Thu Sep 13 22:39:47 HKT 2018
+ TZ='Asia/Shanghai'
+ export TZ
+ date
