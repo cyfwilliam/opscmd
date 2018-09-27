@@ -1,0 +1,8 @@
+服务器管理----瓶颈排查
+
+怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看
+怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看
+怀疑I / O存在瓶颈，可用sar -b，sar -u和sar -d等来查看
+磁盘：df -sh `ls`   du -sh  find . -name *.log -exec du -sh {} \;|grep G
+du  -sh * 2>/dev/null |grep G
+Redis的的内存监控：watch -d -n 1 './redis-cli info | grep mem·
